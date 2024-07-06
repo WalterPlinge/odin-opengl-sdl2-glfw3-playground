@@ -46,7 +46,7 @@ main :: proc() {
 	gl.UniformMatrix4fv(gl.GetUniformLocation(shader, "perspective"), 1, false, &perspective[0, 0])
 
 	// we can load models as well (put this in a function because it's kinda big)
-	mesh, mesh_size := load_model("assets/models/minicooper.obj"); defer delete(mesh)
+	mesh, mesh_size := load_model("../assets/models/minicooper.obj"); defer delete(mesh)
 	vao, vbo: u32
 	gl.GenVertexArrays(1, &vao)
 	gl.BindVertexArray(vao)
@@ -65,7 +65,7 @@ main :: proc() {
 		old_time = time.now()
 
 		event: sdl.Event
-		for sdl.PollEvent(&event) != 0 {
+		for sdl.PollEvent(&event) {
 			if event.type == .QUIT {
 				running = false
 			}
@@ -166,7 +166,7 @@ load_model :: proc(filename: string) -> (mesh: []f32, mesh_size: i32) {
 	// now we know the bounds of the model, we can normalise the positions to [-1, 1]
 	range := bounds[1] - bounds[0]
 	div := max(range.x, range.y, range.z)
-	for p in &positions {
+	for &p in positions {
 		// subtract the lower bound to move p between 0 and `div`
 		// multiply by 2 (so it's 2x range) so we can subtract the range and have it centered on the origin
 		// then divide to move p between -1 and 1
