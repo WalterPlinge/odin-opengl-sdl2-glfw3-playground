@@ -131,7 +131,7 @@ void main() {
 	running := true
 	for running {
 		event: sdl.Event
-		for sdl.PollEvent(&event) != 0 {
+		for sdl.PollEvent(&event) {
 			if event.type == .QUIT {
 				running = false
 			}
